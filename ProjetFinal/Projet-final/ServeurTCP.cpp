@@ -1,5 +1,7 @@
-#include "mainwindow.h"
-MainWindow::MainWindow(QWidget *parent)
+#include "ServeurTCP.h"
+
+//Constructeur de ServeurTCP
+ServeurTCP::ServeurTCP(QWidget *parent)
     : QMainWindow(parent)
 {
 
@@ -7,32 +9,34 @@ MainWindow::MainWindow(QWidget *parent)
     win = new QWidget;
     win->setWindowTitle("Stéréo");
     this->setCentralWidget(win);
+
+    //Le serveur écoute n'importe quel IP entrante sur le port 4242
     _server.listen(QHostAddress::Any, 4242);
+
+    //Connecte au signal NewConnetion() le slot onNewConnection(), à chaque nouvelle connection la fonction onNewConnection est appelé.
     connect(&_server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
     createActions();
-
-
     win->setLayout(layout);
     win->show();
 }
 
-MainWindow::~MainWindow()
+//Destructeur ServeurTCP
+ServeurTCP::~ServeurTCP()
 {
 }
 
-void MainWindow::onNewConnection()
+//Slot appelé quand une connection est détectée
+void ServeurTCP::onNewConnection()
 {
+
    socket = _server.nextPendingConnection();
+   //Connecte le signal readyRead() à la fonction tcpReady(), quand le serveur reçoit quelque chose du client, appelle la fonction tcpReady()
    connect(socket, SIGNAL(readyRead()), this, SLOT(tcpReady()));
-   connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
-
-
    qDebug() << socket->peerAddress().toString() << " connected to server !\n";
-   socket->write("Hello!");
 }
 
-
-void MainWindow::tcpReady()
+//Slot appelé quand un message du client est reçu
+void ServeurTCP::tcpReady()
 {
     socket->write("reçu");
     /*qDebug() << dataSize;
@@ -71,9 +75,10 @@ void MainWindow::tcpReady()
         qDebug()<<"Invalid image received!";
     }*/
 }
-void MainWindow::depthMapEffect()
+
+//Fonction qui calcul la DepthMap et renvoie au client la valeur du pixel central
+void ServeurTCP::depthMapEffect()
 {
-        socket->write("ok");
         int ndisparities = 256;
         int SADWindowSize = 21;
 
@@ -101,12 +106,8 @@ void MainWindow::depthMapEffect()
         socket->write(pchar);
 }
 
-
-
-
-
-
-void MainWindow::openFileL()
+//Slot qui permet d'ajouter l'image gauche (à supprimer plus tard)
+void ServeurTCP::openFileL()
   {
 
 
@@ -123,8 +124,8 @@ void MainWindow::openFileL()
     }
     img1 = cv::imread(st, cv::IMREAD_COLOR);
       }
-
-void MainWindow::openFileR()
+//Slot qui permet d'ajouter l'image droite (à supprimer plus tard)
+void ServeurTCP::openFileR()
   {
 
 
@@ -144,7 +145,8 @@ void MainWindow::openFileR()
     }
   }
 
-void MainWindow::createActions()
+//Initialise les boutons sur la fenêtre (à supprimer sûrement aussi)
+void ServeurTCP::createActions()
 {
     buttonLeft->setStatusTip(tr("Open Left Img"));
     connect(buttonLeft,SIGNAL(clicked()), this, SLOT(openFileL()));

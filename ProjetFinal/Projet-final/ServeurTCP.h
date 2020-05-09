@@ -30,7 +30,7 @@
 #include <QImageReader>
 #include <QTcpServer>
 
-class MainWindow : public QMainWindow
+class ServeurTCP : public QMainWindow
 {
     Q_OBJECT
     int i = 0,dataSize = 0;
@@ -42,8 +42,8 @@ class MainWindow : public QMainWindow
     QTcpSocket *socket;
     QTcpServer  _server;
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ServeurTCP(QWidget *parent = nullptr);
+    ~ServeurTCP();
     void createActions();
 private slots:
     void openFileL();

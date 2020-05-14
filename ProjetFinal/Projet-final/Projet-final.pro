@@ -18,10 +18,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     ServeurTCP.cpp \
-    main.cpp
+    main.cpp \
+    stereoimage.cpp
 
 HEADERS += \
-    ServeurTCP.h
+    ServeurTCP.h \
+    stereoimage.h
 LIBS += D:/opencv-build/openbuild/install/x86/mingw/bin/libopencv_core340.dll
 LIBS += D:/opencv-build/openbuild/install/x86/mingw/bin/libopencv_highgui340.dll
 LIBS += D:/opencv-build/openbuild/install/x86/mingw/bin/libopencv_imgcodecs340.dll

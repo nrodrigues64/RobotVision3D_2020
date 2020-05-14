@@ -15,15 +15,15 @@ class StereoImage
 {
 
 private:
-    int centerPixel;
-    cv::Mat imgL, imgR;
+    int centerPixel; //Pixel central
+    cv::Mat imgL, imgR; // images stereo
 public:
-    StereoImage();
-    StereoImage(cv::Mat imageL, cv::Mat imageR);
-    int getCenterPixel();
-    cv::Mat getImgLeft();
-    cv::Mat getImgRight();
-    int depthMapEffect();
+    StereoImage();//Constructeur
+    StereoImage(cv::Mat imageL, cv::Mat imageR);//Constructeur
+    int getCenterPixel();//Permet de récupérer la valeur de centerPixel
+    cv::Mat getImgLeft();//Permet de récupérer imgL
+    cv::Mat getImgRight();//Permet de récupérer imgR
+    int depthMapEffect();//Calcule la carte de profondeur et récupère la valeur pixel central
 };
 
 #endif // STEREOIMAGE_H
